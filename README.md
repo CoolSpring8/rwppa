@@ -2,6 +2,8 @@
 
 Proxy Adapter for RVPN Web Portal
 
+尝试将 RVPN 网页版接口模拟成一个 HTTP 代理。
+
 [有没有将 CGI Proxy 转化为普通 HTTP Proxy 的工具呢？ - V2EX](https://www.v2ex.com/t/670356)
 
 ## 使用
@@ -32,10 +34,11 @@ Proxy Adapter for RVPN Web Portal
 
 ## 待修复
 
-现在只达到证明概念可行的程度，离实用还有不少距离，欢迎各位大佬 PR 改进！
+离实用还有不少距离，欢迎各位大佬 PR 改进！
 
-- JavaScript 文件会被改动导致网页不正常，如典型例子 jquery.min.js
-- ~~HTTP 301/302 跳转的 Location 字段还没有替换~~
+- ~~JavaScript 文件会被改动导致网页不正常，如典型例子 jquery.min.js~~ 已解决，但不确定是否所有 js 文件都正常
+- ~~HTTP 301/302 跳转的 Location 字段还没有替换~~ 已解决
 - 更友好的用户交互方式（自动生成证书，自动登录获取 Cookies……）
-- "tls: client sent unexpected early data" (upstream issue?)
+- "tls: client sent unexpected early data"（TLS 1.3 Early Data 只能等待 Go 语言 [crypto/tls](https://golang.org/src/crypto/tls/handshake_server_tls13.go) 标准库支持）
+- 疑似 CORS 丢失，见 www.cc98.org 页面对 api.cc98.org 的请求
 - ……
