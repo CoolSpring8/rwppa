@@ -42,3 +42,7 @@ Proxy Adapter for RVPN Web Portal
 - "tls: client sent unexpected early data"（TLS 1.3 Early Data 只能等待 Go 语言 [crypto/tls](https://golang.org/src/crypto/tls/handshake_server_tls13.go) 标准库支持）
 - 疑似 CORS 丢失，见 www.cc98.org 页面对 api.cc98.org 的请求
 - ……
+
+## LICENSE
+
+GPLv3
