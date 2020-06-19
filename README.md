@@ -33,6 +33,6 @@ Proxy Adapter for RVPN Web Portal
 现在只到证明概念可行的程度，欢迎各位大佬 PR 改进！
 
 - JavaScript 文件会被改动导致网页不正常，如典型例子 jquery.min.js
-- HTTP 301/302 跳转的 Location 字段还没有替换
+- ~~HTTP 301/302 跳转的 Location 字段还没有替换~~
 - 更友好的用户交互方式（自动生成证书，自动登录获取 Cookies……）
 - ……

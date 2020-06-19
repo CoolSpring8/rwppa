@@ -12,7 +12,15 @@ import (
 	goproxy_html "github.com/elazarl/goproxy/ext/html"
 )
 
-var someURLMatcher = regexp.MustCompile(`/web/[0-3]/https?/[0-2]/`)
+var (
+	hrefURLMatcher = regexp.MustCompile(`/web/[0-3]/https?/[0-2]/`)
+
+	movedLocationURLMatcher = regexp.MustCompile(`https://.*:443/web/[0-3]/(https?)/[0-2]/`)
+
+	hasMovedLocationHeader = goproxy.RespConditionFunc(func(resp *http.Response, ctx *goproxy.ProxyCtx) bool {
+		return resp.Header.Get("Location") != ""
+	})
+)
 
 func main() {
 	addr := flag.String("addr", ":8080", "proxy listen address")
@@ -38,9 +46,16 @@ func main() {
 			return req, nil
 		})
 
+	proxy.OnResponse(hasMovedLocationHeader).DoFunc(
+		func(resp *http.Response, ctx *goproxy.ProxyCtx) *http.Response {
+			respLocation := resp.Header.Get("Location")
+			newLocation := movedLocationURLMatcher.ReplaceAllString(respLocation, "$1://")
+			resp.Header.Set("Location", newLocation)
+			return resp
+		})
 	proxy.OnResponse(goproxy_html.IsWebRelatedText).Do(goproxy_html.HandleString(
 		func(s string, ctx *goproxy.ProxyCtx) string {
-			c := someURLMatcher.ReplaceAllString(s, "//")
+			c := hrefURLMatcher.ReplaceAllString(s, "//")
 			return c
 		}))
 
