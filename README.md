@@ -1,6 +1,6 @@
-# pafrwp
+# rwppa
 
-Proxy Adapter for RVPN Web Portal
+RVPN Web Portal Proxy Adapter
 
 尝试将 RVPN 网页版接口模拟成一个 HTTP 代理。
 
@@ -27,7 +27,7 @@ Proxy Adapter for RVPN Web Portal
 6. 在浏览器登录 rvpn.zju.edu.cn，从 Cookies 中找到 TWFID 字段的值；
 
 7. ```
-   .\pafrwp --id TWFID字段的值
+   .\rwppa --id TWFID字段的值
    ```
 
 1~4 是可选的。你也可以信任并使用 cert.go 自带的证书，但出于安全性考虑不推荐这样做。
