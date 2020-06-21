@@ -15,8 +15,30 @@
 
 package main
 
-func main() {
-	username, password, listenAddr := newLoginWindow()
-	twfid := loginRVPNWebPortal(username, password)
-	startProxyServer(listenAddr, twfid)
+import (
+	"net/http"
+	"net/url"
+	"strings"
+)
+
+const (
+	endpointURL string = "https://rvpn.zju.edu.cn/por/login_psw.csp?type=cs&dev=android-phone&dev=android-phone&language=zh_CN"
+)
+
+func loginRVPNWebPortal(username string, password string) string {
+	data := url.Values{}
+	data.Set("svpn_name", username)
+	data.Set("svpn_password", password)
+
+	client := &http.Client{}
+	r, _ := http.NewRequest("POST", endpointURL, strings.NewReader(data.Encode()))
+
+	resp, err := client.Do(r)
+	if err != nil {
+		panic(err)
+	}
+
+	twfid := resp.Cookies()[0].Value
+
+	return twfid
 }
