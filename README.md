@@ -1,12 +1,24 @@
 # rwppa
 
-RVPN Web Portal Proxy Adapter
+RVPN Web Portal Proxy Adapter (based on MITM)
 
-## 特性
+尝试将[浙江大学 RVPN 网页版](https://rvpn.zju.edu.cn)模拟成一个 HTTP 代理。
 
-尝试将 RVPN 网页版接口模拟成一个 HTTP 代理。
+提出这个想法的讨论：[有没有将 CGI Proxy 转化为普通 HTTP Proxy 的工具呢？ - V2EX](https://www.v2ex.com/t/670356)
 
-[有没有将 CGI Proxy 转化为普通 HTTP Proxy 的工具呢？ - V2EX](https://www.v2ex.com/t/670356)
+## 特性及局限
+
+### 特性：
+
+- 配置完毕并登录后，可访问校内校外 HTTP / HTTPS 网站（例如 CC98，正版软件服务与管理平台等），原理基于模拟 RVPN 网页版。
+- 支持 HTTP 的 GET，POST，DELETE，HEAD 方法，一定程度上支持 OPTIONS 方法（模拟）。
+
+### 局限：
+
+- **不支持 WebSocket，FTP，SSH等非 HTTP 协议。**
+- 不支持 HTTP 的 PATCH 等方法。
+- OPTIONS 方法由于 RVPN 网页版不支持，所以实际不会向服务器发送请求，而是由 rwppa 直接返回一个针对 CORS 预检而配置的较为宽松的结果，安全性有所降低。
+- 不支持 TLS 1.3 Early Data（0-RTT）。若原网站启用过 TLS 1.3 Early Data且 session ticket 还没过期则会[无法访问](https://golang.org/src/crypto/tls/handshake_server_tls13.go)（如 V2EX）。（但是短期内大概不会有开启这个特性的校内网站吧。）
 
 ## 使用
 
@@ -34,18 +46,11 @@ RVPN Web Portal Proxy Adapter
 
 1~4 是可选的。你也可以信任并使用 cert.go 自带的证书，但出于安全性考虑不推荐这样做。
 
-由于加入了 Fyne GUI，现在编译还需要 GCC 依赖。
+由于使用了 Fyne GUI，现在编译还需要 GCC 等额外依赖。
 
-## 待修复
+## 其他
 
-离实用还有不少距离，欢迎各位大佬 PR 改进！
-
-- ~~JavaScript 文件会被改动导致网页不正常，如典型例子 jquery.min.js~~ 已解决，但不确定是否所有 js 文件都正常
-- ~~HTTP 301/302 跳转的 Location 字段还没有替换~~ 已解决
-- 更友好的用户交互方式（自动生成证书~~，自动登录获取 Cookies~~……） 已部分解决
-- "tls: client sent unexpected early data"（TLS 1.3 Early Data 只能等待 Go 语言 [crypto/tls](https://golang.org/src/crypto/tls/handshake_server_tls13.go) 标准库支持）
-- 疑似 CORS 丢失，见 www.cc98.org 页面对 api.cc98.org 的请求
-- ……
+欢迎 PR 改进！
 
 ## LICENSE
 

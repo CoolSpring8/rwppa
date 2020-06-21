@@ -33,6 +33,11 @@ var (
 
 	movedLocationURLMatcher *regexp.Regexp = regexp.MustCompile(`https://.*:443/web/[0-3]/(https?)/[0-2]/`)
 
+	isOPTIONSRequest goproxy.ReqCondition = goproxy.ReqConditionFunc(
+		func(req *http.Request, ctx *goproxy.ProxyCtx) bool {
+			return req.Method == "OPTIONS"
+		})
+
 	hasMovedLocationHeader goproxy.RespCondition = goproxy.RespConditionFunc(func(resp *http.Response, ctx *goproxy.ProxyCtx) bool {
 		return resp.Header.Get("Location") != ""
 	})
@@ -79,6 +84,15 @@ func startProxyServer(listenAddr string, twfid string) {
 			req.AddCookie(&http.Cookie{Name: "TWFID", Value: twfid})
 
 			return req, nil
+		})
+	proxy.OnRequest(isOPTIONSRequest).DoFunc(
+		func(req *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
+			resp := goproxy.NewResponse(req, goproxy.ContentTypeText, http.StatusOK, "")
+			resp.Header.Add("Access-Control-Allow-Credentials", "true")
+			resp.Header.Add("Access-Control-Allow-Headers", "authorization")
+			resp.Header.Add("Access-Control-Allow-Methods", "GET, POST, HEAD, DELETE, OPTIONS")
+			resp.Header.Add("Access-Control-Allow-Origin", "*")
+			return req, resp
 		})
 
 	proxy.OnResponse(hasMovedLocationHeader).DoFunc(
