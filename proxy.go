@@ -74,11 +74,21 @@ func startProxyServer(listenAddr string, twfid string) {
 			ctx.UserData = reqData{rawURLWithPort, rawURLWithoutPort}
 
 			// new request target
-			newURL, err := url.Parse("https://rvpn.zju.edu.cn/web/2/" + req.URL.Scheme + "/0/" + req.URL.Host + req.URL.Path) // port has been included in "Host" param
-			if err != nil {
-				return req, nil // this rarely happens?
+			// TODO: add other missed fields in "type URL struct" if necessary, like "User"
+			// port has been included in "Host"
+			if req.URL.RawQuery != "" {
+				newURL, err := url.Parse("https://rvpn.zju.edu.cn/web/2/" + req.URL.Scheme + "/0/" + req.URL.Host + req.URL.Path + "?" + req.URL.RawQuery)
+				if err != nil {
+					return req, nil // this rarely happens?
+				}
+				req.URL = newURL
+			} else {
+				newURL, err := url.Parse("https://rvpn.zju.edu.cn/web/2/" + req.URL.Scheme + "/0/" + req.URL.Host + req.URL.Path)
+				if err != nil {
+					return req, nil
+				}
+				req.URL = newURL
 			}
-			req.URL = newURL
 
 			// add cookie for web portal verification
 			req.AddCookie(&http.Cookie{Name: "TWFID", Value: twfid})
