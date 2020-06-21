@@ -11,7 +11,7 @@ RVPN Web Portal Proxy Adapter (based on MITM)
 ### 特性：
 
 - 配置完毕并登录后，可访问校内校外 HTTP / HTTPS 网站（例如 CC98，正版软件服务与管理平台等），原理基于模拟 RVPN 网页版。
-- 支持 HTTP 的 GET，POST，DELETE，HEAD 方法，一定程度上支持 OPTIONS 方法（模拟）。
+- 支持 HTTP 的 GET，POST，PUT，DELETE，HEAD 方法，一定程度上支持 OPTIONS 方法（模拟）。
 
 ### 局限：
 

@@ -70,7 +70,7 @@ func startProxyServer(listenAddr string, twfid string) {
 			if err != nil {
 				hostWithoutPort = req.URL.Host // http at port 80 causes "missing port in address"
 			}
-			rawURLWithoutPort := req.URL.Scheme + "://" + hostWithoutPort + req.URL.Path
+			rawURLWithoutPort := req.URL.Scheme + "://" + hostWithoutPort + req.URL.Path // Query isn't here, but it doesn't matter
 			ctx.UserData = reqData{rawURLWithPort, rawURLWithoutPort}
 
 			// new request target
@@ -99,8 +99,8 @@ func startProxyServer(listenAddr string, twfid string) {
 		func(req *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
 			resp := goproxy.NewResponse(req, goproxy.ContentTypeText, http.StatusOK, "")
 			resp.Header.Add("Access-Control-Allow-Credentials", "true")
-			resp.Header.Add("Access-Control-Allow-Headers", "authorization")
-			resp.Header.Add("Access-Control-Allow-Methods", "GET, POST, HEAD, DELETE, OPTIONS")
+			resp.Header.Add("Access-Control-Allow-Headers", "authorization, content-type")
+			resp.Header.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, HEAD, OPTIONS")
 			resp.Header.Add("Access-Control-Allow-Origin", "*")
 			return req, resp
 		})
