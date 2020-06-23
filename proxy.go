@@ -56,7 +56,14 @@ type reqData struct {
 }
 
 func startProxyServer(listenAddr string, twfid string) {
-	setCA(caCert, caKey)
+	caCert, caKey, err := getCA()
+	if err != nil {
+		panic(err)
+	}
+	err = setCA(caCert, caKey)
+	if err != nil {
+		panic(err)
+	}
 
 	proxy := goproxy.NewProxyHttpServer()
 	proxy.Verbose = true

@@ -20,3 +20,7 @@
 
 # Local History for Visual Studio Code
 .history/
+
+# Other Runtime-Generated Files
+*.crt
+*.key
