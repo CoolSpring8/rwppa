@@ -1,5 +1,7 @@
 # rwppa
 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CoolSpring8/rwppa/Go) ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/CoolSpring8/rwppa) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/CoolSpring8/rwppa) ![GitHub All Releases](https://img.shields.io/github/downloads/CoolSpring8/rwppa/total) ![GitHub](https://img.shields.io/github/license/CoolSpring8/rwppa)
+
 RVPN Web Portal Proxy Adapter (based on MITM)
 
 因为不想在电脑上安装 EasyConnect，所以做了一个访问 ZJU 校内网站的轻量级方案——将 [浙江大学 RVPN 网页版](https://rvpn.zju.edu.cn) 模拟为本地 HTTP 代理。
@@ -37,3 +39,5 @@ RVPN Web Portal Proxy Adapter (based on MITM)
 ## LICENSE
 
 GPLv3
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCoolSpring8%2Frwppa.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FCoolSpring8%2Frwppa?ref=badge_large)
