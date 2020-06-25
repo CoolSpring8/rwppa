@@ -1,6 +1,6 @@
 # rwppa
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CoolSpring8/rwppa/Go) ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/CoolSpring8/rwppa) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/CoolSpring8/rwppa) ![GitHub All Releases](https://img.shields.io/github/downloads/CoolSpring8/rwppa/total) ![GitHub](https://img.shields.io/github/license/CoolSpring8/rwppa)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CoolSpring8/rwppa/Go) ![Codecov](https://img.shields.io/codecov/c/github/CoolSpring8/rwppa) ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/CoolSpring8/rwppa) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/CoolSpring8/rwppa) ![GitHub All Releases](https://img.shields.io/github/downloads/CoolSpring8/rwppa/total) ![GitHub](https://img.shields.io/github/license/CoolSpring8/rwppa)
 
 RVPN Web Portal Proxy Adapter (based on MITM)
 
@@ -38,6 +38,4 @@ RVPN Web Portal Proxy Adapter (based on MITM)
 
 ## LICENSE
 
-GPLv3
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCoolSpring8%2Frwppa.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FCoolSpring8%2Frwppa?ref=badge_large)
+GPL version 3 or any later version
