@@ -25,10 +25,10 @@ RVPN Web Portal Proxy Adapter (based on MITM)
 
 ### 局限：
 
-- **不支持 WebSocket，FTP，SSH等非 HTTP 协议。**你可能会想了解 [Hagb/docker-easyconnect](https://github.com/Hagb/docker-easyconnect) 项目。
-- 不支持 HTTP 的 PATCH 等方法。
-- OPTIONS 方法由于 RVPN 网页版不支持，所以实际不会向服务器发送请求，而是由 rwppa 直接返回一个针对 CORS 预检而配置的较为宽松的结果，安全性有所降低。
-- 不支持 TLS 1.3 Early Data（0-RTT）。若原网站启用过 TLS 1.3 Early Data 且 session ticket 还没过期则会[无法访问](https://golang.org/src/crypto/tls/handshake_server_tls13.go)（如 V2EX）。（但是短期内大概不会有开启这个特性的校内网站吧。）
+- 因工作原理所限，**不支持转发 WebSocket，FTP，SSH 等除 HTTP 外的其他任何应用层协议请求。** 如有需求，你可能会想了解 [Hagb/docker-easyconnect](https://github.com/Hagb/docker-easyconnect) 项目。
+- 由于 RVPN 网页版不支持而不支持 HTTP 的 PATCH 等方法。
+- 由于 RVPN 网页版不支持 CORS 预检用到的 OPTIONS 方法，所以 rwppa 被配置为收到 OPTIONS 请求不向服务器转发，而是直接返回一个针对此需求而配置的较为宽松的 Access-Control-Allow-(...) 结果，安全性有所降低。
+- 由于 crypto/tls 标准库不支持而不支持 TLS 1.3 Early Data（0-RTT）。若原网站启用过 TLS 1.3 Early Data 且 session ticket 还没过期则会[无法访问](https://golang.org/src/crypto/tls/handshake_server_tls13.go)（如 V2EX）。（但是短期内大概不会有开启这个特性的校内网站吧。）
 
 ## 其他
 

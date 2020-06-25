@@ -25,7 +25,7 @@ const (
 	endpointURL string = "https://rvpn.zju.edu.cn/por/login_psw.csp?type=cs&dev=android-phone&dev=android-phone&language=zh_CN"
 )
 
-func loginRVPNWebPortal(username string, password string) string {
+func loginRVPNWebPortal(username, password string) string {
 	data := url.Values{}
 	data.Set("svpn_name", username)
 	data.Set("svpn_password", password)

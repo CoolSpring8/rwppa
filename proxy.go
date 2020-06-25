@@ -55,7 +55,7 @@ type reqData struct {
 	rawURLWithoutPort string
 }
 
-func startProxyServer(listenAddr string, twfid string) {
+func startProxyServer(listenAddr, twfid string) {
 	caCert, caKey, err := getCA()
 	if err != nil {
 		panic(err)
