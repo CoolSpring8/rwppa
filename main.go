@@ -15,8 +15,15 @@
 
 package main
 
+import "fmt"
+
 func main() {
-	username, password, listenAddr := newLoginWindow()
+	var username string
+	var password string
+	var listenAddr string
+	fmt.Scanln(&username)
+	fmt.Scanln(&password)
+	fmt.Scanln(&listenAddr)
 	twfid := loginRVPNWebPortal(username, password)
 	startProxyServer(listenAddr, twfid)
 }

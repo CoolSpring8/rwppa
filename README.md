@@ -21,12 +21,12 @@ RVPN Web Portal Proxy Adapter (based on MITM)
 
 - 配置完毕并登录后，可访问校内校外 HTTP / HTTPS 网站（例如 CC98，正版软件服务与管理平台等）。
 - 支持 HTTP 的 GET，POST，PUT，DELETE，HEAD 方法，一定程度上支持 OPTIONS 方法（仅为模拟）。
-- 正确处理大部分网页及网页资源。如果碰到问题，欢迎提 Issue/PR ！
+- 正确处理大部分网页及网页资源。如果碰到问题，欢迎提 Issue / PR ！
 
 ### 局限：
 
 - 因工作原理所限，**不支持转发 WebSocket，FTP，SSH 等除 HTTP 外的其他任何应用层协议请求。** 如有需求，你可能会想了解 [Hagb/docker-easyconnect](https://github.com/Hagb/docker-easyconnect) 项目。
-- 由于 RVPN 网页版不支持而不支持 HTTP 的 PATCH 等方法。
+- 由于 RVPN 网页版不支持（返回 403）而不支持 HTTP 的 PATCH 等方法。
 - 由于 RVPN 网页版不支持 CORS 预检用到的 OPTIONS 方法，所以 rwppa 被配置为收到 OPTIONS 请求不向服务器转发，而是直接返回一个针对此需求而配置的较为宽松的 Access-Control-Allow-(...) 结果，安全性有所降低。
 - 由于 crypto/tls 标准库不支持而不支持 TLS 1.3 Early Data（0-RTT）。若原网站启用过 TLS 1.3 Early Data 且 session ticket 还没过期则会[无法访问](https://golang.org/src/crypto/tls/handshake_server_tls13.go)（如 V2EX）。（但是短期内大概不会有开启这个特性的校内网站吧。）
 
