@@ -34,8 +34,8 @@ jobs:
     - name: Build
       run: go build -v ./cmd/rwppa
 
-    - name: Test
-      run: go test -race -coverprofile=coverage.txt -covermode=atomic
+    # - name: Test
+    #   run: go test -race -coverprofile=coverage.txt -covermode=atomic
 
-    - name: Upload Codecov reports
-      run: bash <(curl -s https://codecov.io/bash)
+    # - name: Upload Codecov reports
+    #   run: bash <(curl -s https://codecov.io/bash)
