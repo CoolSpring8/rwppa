@@ -40,9 +40,18 @@ func main() {
 	var username string
 	var password string
 	var listenAddr string
-	fmt.Scanln(&username)
-	fmt.Scanln(&password)
-	fmt.Scanln(&listenAddr)
+	_, err := fmt.Scanln(&username)
+	if err != nil {
+		panic(err)
+	}
+	_, err = fmt.Scanln(&password)
+	if err != nil {
+		panic(err)
+	}
+	_, err = fmt.Scanln(&listenAddr)
+	if err != nil {
+		panic(err)
+	}
 	twfid := login.LoginRVPNWebPortal(username, password)
 	proxy.StartProxyServer(listenAddr, twfid)
 }
