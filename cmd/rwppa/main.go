@@ -29,7 +29,9 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	var username string
@@ -38,6 +40,6 @@ func main() {
 	fmt.Scanln(&username)
 	fmt.Scanln(&password)
 	fmt.Scanln(&listenAddr)
-	twfid := loginRVPNWebPortal(username, password)
-	startProxyServer(listenAddr, twfid)
+	twfid := login.loginRVPNWebPortal(username, password)
+	proxy.startProxyServer(listenAddr, twfid)
 }

@@ -1,4 +1,4 @@
-module github.com/CoolSpring8/rwppa
+module github.com/coolspring8/rwppa
 
 go 1.14
 

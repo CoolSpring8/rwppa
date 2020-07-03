@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package main
+package login
 
 import (
 	"net/http"
@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	// endpointURL is ZJU RVPN web portal's login interface.
+	// endpointURL is where ZJU RVPN web portal's login interface locates.
 	// TODO: try to find out if some of the parameters are not necessary.
 	endpointURL string = "https://rvpn.zju.edu.cn/por/login_psw.csp?type=cs&dev=android-phone&dev=android-phone&language=zh_CN"
 )

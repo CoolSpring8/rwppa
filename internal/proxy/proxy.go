@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package main
+package proxy
 
 import (
 	"fmt"
@@ -65,11 +65,11 @@ type reqData struct {
 
 // startProxyServer starts a proxy server listening at the given port with the given twfid.
 func startProxyServer(listenAddr, twfid string) {
-	caCert, caKey, err := getCA()
+	caCert, caKey, err := cert.getCA()
 	if err != nil {
 		panic(err)
 	}
-	err = setCA(caCert, caKey)
+	err = cert.setCA(caCert, caKey)
 	if err != nil {
 		panic(err)
 	}
