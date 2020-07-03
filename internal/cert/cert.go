@@ -45,7 +45,7 @@ import (
 	"github.com/elazarl/goproxy"
 )
 
-// getCA returns a CA cert, a CA key or an error in file reading or writing process.
+// GetCA returns a CA cert, a CA key or an error in file reading or writing process.
 // If one of rootCA.crt and rootCA.key does not exist,
 // new ones will be generated, wrote to current dir and returned.
 // TODO: do not hardcode filename.
@@ -114,7 +114,7 @@ func GetCA() ([]byte, []byte, error) {
 	return caCert, caKey, err
 }
 
-// setCA takes CA cert and CA key, and sets up goproxy CA.
+// SetCA takes CA cert and CA key, and sets up goproxy CA.
 // Returns error in parsing and setting CA.
 func SetCA(caCert, caKey []byte) error {
 	goproxyCa, err := tls.X509KeyPair(caCert, caKey)

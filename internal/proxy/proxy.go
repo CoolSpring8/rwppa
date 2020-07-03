@@ -64,7 +64,7 @@ type reqData struct {
 	rawURLWithoutPort string
 }
 
-// startProxyServer starts a proxy server listening at the given port with the given twfid.
+// StartProxyServer starts a proxy server listening at the given address with the given TWFID.
 func StartProxyServer(listenAddr, twfid string) {
 	caCert, caKey, err := cert.GetCA()
 	if err != nil {

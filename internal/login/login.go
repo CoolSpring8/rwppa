@@ -27,7 +27,7 @@ const (
 	endpointURL string = "https://rvpn.zju.edu.cn/por/login_psw.csp?type=cs&dev=android-phone&dev=android-phone&language=zh_CN"
 )
 
-// loginRVPNWebPortal takes username and password, returns TWFID.
+// LoginRVPNWebPortal takes username and password, returns TWFID.
 // TWFID is used by the web portal for authentication.
 // Incorrect or empty username and password will simply lead to a useless TWFID.
 // TODO: verify before returning. throw an error if not working.
