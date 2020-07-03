@@ -29,19 +29,24 @@ import (
 )
 
 var (
+	// rvpnURLMatcher detects RVPN-modified URLs.
 	rvpnURLMatcher *regexp.Regexp = regexp.MustCompile(`/web/[0-3]/(https?)/[0-2]/`)
 
+	// movedLocationURLMatcher detects the URL in the 3xx response's Location header.
 	movedLocationURLMatcher *regexp.Regexp = regexp.MustCompile(`https://.*:443/web/[0-3]/(https?)/[0-2]/`)
 
+	// isOPTIONSRequest checks whether the request's method is OPTIONS.
 	isOPTIONSRequest goproxy.ReqCondition = goproxy.ReqConditionFunc(
 		func(req *http.Request, ctx *goproxy.ProxyCtx) bool {
 			return req.Method == "OPTIONS"
 		})
 
+	// hasMovedLocationHeader checks whether the request has a Location header.
 	hasMovedLocationHeader goproxy.RespCondition = goproxy.RespConditionFunc(func(resp *http.Response, ctx *goproxy.ProxyCtx) bool {
 		return resp.Header.Get("Location") != ""
 	})
 
+	// isWebRelatedText checks whether the response's content type is one of html, js, css, xml and json.
 	isWebRelatedText goproxy.RespCondition = goproxy.ContentTypeIs(
 		"text/html",
 		"text/css",
@@ -50,11 +55,15 @@ var (
 		"text/json")
 )
 
+// reqData stores a request's raw URL, and a port-stripped one.
+// rawURLwithoutPort is for URLs like https://example.com:443/ ,
+// where in href-s, port 443 does not show up but need to be replaced.
 type reqData struct {
 	rawURLWithPort    string
 	rawURLWithoutPort string
 }
 
+// startProxyServer starts a proxy server listening at the given port with the given twfid.
 func startProxyServer(listenAddr, twfid string) {
 	caCert, caKey, err := getCA()
 	if err != nil {

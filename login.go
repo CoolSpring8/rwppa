@@ -22,9 +22,15 @@ import (
 )
 
 const (
+	// endpointURL is ZJU RVPN web portal's login interface.
+	// TODO: try to find out if some of the parameters are not necessary.
 	endpointURL string = "https://rvpn.zju.edu.cn/por/login_psw.csp?type=cs&dev=android-phone&dev=android-phone&language=zh_CN"
 )
 
+// loginRVPNWebPortal takes username and password, returns TWFID.
+// TWFID is used by the web portal for authentication.
+// Incorrect or empty username and password will simply lead to a useless TWFID.
+// TODO: verify before returning. throw an error if not working.
 func loginRVPNWebPortal(username, password string) string {
 	data := url.Values{}
 	data.Set("svpn_name", username)

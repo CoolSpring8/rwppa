@@ -45,6 +45,10 @@ import (
 	"github.com/elazarl/goproxy"
 )
 
+// getCA returns a CA cert, a CA key or an error in file reading or writing process.
+// If one of rootCA.crt and rootCA.key does not exist,
+// new ones will be generated, wrote to current dir and returned.
+// TODO: do not hardcode filename.
 func getCA() ([]byte, []byte, error) {
 	if fileExists("rootCA.crt") && fileExists("rootCA.key") {
 		caCert, err := ioutil.ReadFile("rootCA.crt")
@@ -110,6 +114,8 @@ func getCA() ([]byte, []byte, error) {
 	return caCert, caKey, err
 }
 
+// setCA takes CA cert and CA key, and sets up goproxy CA.
+// Returns error in parsing and setting CA.
 func setCA(caCert, caKey []byte) error {
 	goproxyCa, err := tls.X509KeyPair(caCert, caKey)
 	if err != nil {
@@ -126,6 +132,7 @@ func setCA(caCert, caKey []byte) error {
 	return nil
 }
 
+// fileExists checks if a file exists and is not a directory.
 func fileExists(filename string) bool {
 	info, err := os.Stat(filename)
 	if os.IsNotExist(err) {
@@ -134,6 +141,8 @@ func fileExists(filename string) bool {
 	return !info.IsDir()
 }
 
+// panicOnErr panics on err not equal to nil.
+// TODO: better handling of errors, don't panic or you should recover at some time.
 func panicOnErr(err error) {
 	if err != nil {
 		panic(err)
