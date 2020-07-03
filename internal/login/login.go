@@ -31,7 +31,7 @@ const (
 // TWFID is used by the web portal for authentication.
 // Incorrect or empty username and password will simply lead to a useless TWFID.
 // TODO: verify before returning. throw an error if not working.
-func loginRVPNWebPortal(username, password string) string {
+func LoginRVPNWebPortal(username, password string) string {
 	data := url.Values{}
 	data.Set("svpn_name", username)
 	data.Set("svpn_password", password)

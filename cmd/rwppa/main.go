@@ -31,6 +31,9 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/coolspring8/rwppa/internal/login"
+	"github.com/coolspring8/rwppa/internal/proxy"
 )
 
 func main() {
@@ -40,6 +43,6 @@ func main() {
 	fmt.Scanln(&username)
 	fmt.Scanln(&password)
 	fmt.Scanln(&listenAddr)
-	twfid := login.loginRVPNWebPortal(username, password)
-	proxy.startProxyServer(listenAddr, twfid)
+	twfid := login.LoginRVPNWebPortal(username, password)
+	proxy.StartProxyServer(listenAddr, twfid)
 }

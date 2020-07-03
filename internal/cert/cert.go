@@ -49,7 +49,7 @@ import (
 // If one of rootCA.crt and rootCA.key does not exist,
 // new ones will be generated, wrote to current dir and returned.
 // TODO: do not hardcode filename.
-func getCA() ([]byte, []byte, error) {
+func GetCA() ([]byte, []byte, error) {
 	if fileExists("rootCA.crt") && fileExists("rootCA.key") {
 		caCert, err := ioutil.ReadFile("rootCA.crt")
 		if err != nil {
@@ -116,7 +116,7 @@ func getCA() ([]byte, []byte, error) {
 
 // setCA takes CA cert and CA key, and sets up goproxy CA.
 // Returns error in parsing and setting CA.
-func setCA(caCert, caKey []byte) error {
+func SetCA(caCert, caKey []byte) error {
 	goproxyCa, err := tls.X509KeyPair(caCert, caKey)
 	if err != nil {
 		return err

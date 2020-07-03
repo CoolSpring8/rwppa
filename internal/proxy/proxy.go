@@ -24,6 +24,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/coolspring8/rwppa/internal/cert"
 	"github.com/elazarl/goproxy"
 	goproxy_html "github.com/elazarl/goproxy/ext/html"
 )
@@ -64,12 +65,12 @@ type reqData struct {
 }
 
 // startProxyServer starts a proxy server listening at the given port with the given twfid.
-func startProxyServer(listenAddr, twfid string) {
-	caCert, caKey, err := cert.getCA()
+func StartProxyServer(listenAddr, twfid string) {
+	caCert, caKey, err := cert.GetCA()
 	if err != nil {
 		panic(err)
 	}
-	err = cert.setCA(caCert, caKey)
+	err = cert.SetCA(caCert, caKey)
 	if err != nil {
 		panic(err)
 	}
