@@ -24,3 +24,7 @@
 # Other Runtime-Generated Files
 *.crt
 *.key
+
+# Binary
+rwppa*
+
