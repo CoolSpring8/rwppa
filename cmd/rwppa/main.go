@@ -40,14 +40,17 @@ func main() {
 	var username string
 	var password string
 	var listenAddr string
+	fmt.Println("Username:")
 	_, err := fmt.Scanln(&username)
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("Password:")
 	_, err = fmt.Scanln(&password)
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("Listen Address:")
 	_, err = fmt.Scanln(&listenAddr)
 	if err != nil {
 		panic(err)
