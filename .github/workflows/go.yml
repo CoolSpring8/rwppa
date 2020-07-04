@@ -24,7 +24,6 @@ jobs:
 
     - name: Get dependencies
       run: |
-        sudo apt install -y libgl1-mesa-dev xorg-dev
         go get -v -t -d ./...
         if [ -f Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
@@ -32,10 +31,10 @@ jobs:
         fi
 
     - name: Build
-      run: go build -v ./cmd/rwppa
+      run: go build -v .
 
-    # - name: Test
-    #   run: go test -race -coverprofile=coverage.txt -covermode=atomic
+    - name: Test
+      run: go test -race -coverprofile=coverage.txt -covermode=atomic
 
-    # - name: Upload Codecov reports
-    #   run: bash <(curl -s https://codecov.io/bash)
+    - name: Upload Codecov reports
+      run: bash <(curl -s https://codecov.io/bash)

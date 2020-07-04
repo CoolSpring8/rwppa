@@ -36,7 +36,7 @@ var (
 	// rvpnURLMatcher detects RVPN-modified URLs.
 	rvpnURLMatcher *regexp.Regexp = regexp.MustCompile(`/web/[0-3]/(https?)/[0-2]/`)
 
-	// movedLocationURLMatcher detects the URL in the 3xx response's Location header.
+	// movedLocationURLMatcher detects RVPN-modified URL in the 3xx response's Location header.
 	movedLocationURLMatcher *regexp.Regexp = regexp.MustCompile(`https://.*:443/web/[0-3]/(https?)/[0-2]/`)
 
 	// isOPTIONSRequest checks whether the request's method is OPTIONS.
@@ -61,7 +61,7 @@ var (
 
 // reqData stores a request's raw URL, and a port-stripped one.
 // rawURLwithoutPort is for URLs like https://example.com:443/ ,
-// where in href-s, port 443 does not show up but need to be replaced.
+// where in href-s, port 443 does not show up but needs to be replaced.
 type reqData struct {
 	rawURLWithPort    string
 	rawURLWithoutPort string
