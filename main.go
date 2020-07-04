@@ -31,9 +31,11 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/coolspring8/rwppa/internal/proxy"
 	"github.com/coolspring8/rwppa/internal/rvpn"
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 func main() {
@@ -46,10 +48,12 @@ func main() {
 		panic(err)
 	}
 	fmt.Println("Password:")
-	_, err = fmt.Scanln(&password)
+	pw, err := terminal.ReadPassword(int(os.Stdin.Fd()))
 	if err != nil {
 		panic(err)
 	}
+	password = string(pw)
+	fmt.Println("")
 	fmt.Println("Listen Address:")
 	_, err = fmt.Scanln(&listenAddr)
 	if err != nil {
