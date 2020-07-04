@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package login
+// Package rvpn deals with things related to ZJU RVPN web portal.
+package rvpn
 
 import (
 	"net/http"
@@ -23,28 +24,37 @@ import (
 
 const (
 	// endpointURL is where ZJU RVPN web portal's login interface locates.
-	// TODO: try to find out if some of the parameters are not necessary.
+	// TODO: find out if some of the parameters are not necessary.
 	endpointURL string = "https://rvpn.zju.edu.cn/por/login_psw.csp?type=cs&dev=android-phone&dev=android-phone&language=zh_CN"
 )
 
-// LoginRVPNWebPortal takes username and password, returns TWFID.
+// WebPortal refers to ZJU RVPN web portal.
+type WebPortal struct {
+	Username string // Username is ZJU network service account username.
+	Password string // Password is ZJU network service account password.
+}
+
+// LogIn uses username and password to get a TWFID.
 // TWFID is used by the web portal for authentication.
 // Incorrect or empty username and password will simply lead to a useless TWFID.
-// TODO: verify before returning. throw an error if not working.
-func LoginRVPNWebPortal(username, password string) string {
+// TODO: verify, throw an error if not working.
+func (webPortal WebPortal) LogIn() (*string, error) {
 	data := url.Values{}
-	data.Set("svpn_name", username)
-	data.Set("svpn_password", password)
+	data.Set("svpn_name", webPortal.Username)
+	data.Set("svpn_password", webPortal.Password)
 
 	client := &http.Client{}
-	r, _ := http.NewRequest("POST", endpointURL, strings.NewReader(data.Encode()))
-
-	resp, err := client.Do(r)
+	req, err := http.NewRequest("POST", endpointURL, strings.NewReader(data.Encode()))
 	if err != nil {
-		panic(err)
+		return nil, err
+	}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
 	}
 
 	twfid := resp.Cookies()[0].Value
 
-	return twfid
+	return &twfid, nil
 }

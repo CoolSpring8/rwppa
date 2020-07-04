@@ -13,9 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+// Package proxy provides things to set up a proxy.
 package proxy
 
 import (
+	"crypto/tls"
+	"crypto/x509"
 	"fmt"
 	"log"
 	"net"
@@ -70,7 +73,7 @@ func StartProxyServer(listenAddr, twfid string) {
 	if err != nil {
 		panic(err)
 	}
-	err = cert.SetCA(caCert, caKey)
+	err = SetCA(caCert, caKey)
 	if err != nil {
 		panic(err)
 	}
@@ -143,4 +146,22 @@ func StartProxyServer(listenAddr, twfid string) {
 	fmt.Println("Current TWFID:" + twfid)
 	fmt.Println("Listen Address:" + listenAddr)
 	log.Fatal(http.ListenAndServe(listenAddr, proxy))
+}
+
+// SetCA takes CA cert and CA key, and sets up goproxy CA.
+// Returns error in parsing and setting CA.
+func SetCA(caCert, caKey []byte) error {
+	goproxyCa, err := tls.X509KeyPair(caCert, caKey)
+	if err != nil {
+		return err
+	}
+	if goproxyCa.Leaf, err = x509.ParseCertificate(goproxyCa.Certificate[0]); err != nil {
+		return err
+	}
+	goproxy.GoproxyCa = goproxyCa
+	goproxy.OkConnect = &goproxy.ConnectAction{Action: goproxy.ConnectAccept, TLSConfig: goproxy.TLSConfigFromCA(&goproxyCa)}
+	goproxy.MitmConnect = &goproxy.ConnectAction{Action: goproxy.ConnectMitm, TLSConfig: goproxy.TLSConfigFromCA(&goproxyCa)}
+	goproxy.HTTPMitmConnect = &goproxy.ConnectAction{Action: goproxy.ConnectHTTPMitm, TLSConfig: goproxy.TLSConfigFromCA(&goproxyCa)}
+	goproxy.RejectConnect = &goproxy.ConnectAction{Action: goproxy.ConnectReject, TLSConfig: goproxy.TLSConfigFromCA(&goproxyCa)}
+	return nil
 }

@@ -17,7 +17,7 @@
 // In other words, on receiving requests, they will be sent to rvpn.zju.edu.cn and corresponding results will be passed back to the browser,
 // or any other HTTP-proxy-capable requesters, like clients that only utilizes HTTP protocol.
 
-// In short, users are given the ability to browse ZJU intranet sites,
+// In short, users are given the ability to access ZJU intranet sites,
 // with a ZJU internet service account required, and via ZJU RVPN web portal (view rvpn.zju.edu.cn on phones to see).
 // Hopefully it can replace the role of Sangfor EasyConnect, to a certain extent.
 
@@ -32,8 +32,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/coolspring8/rwppa/internal/login"
 	"github.com/coolspring8/rwppa/internal/proxy"
+	"github.com/coolspring8/rwppa/internal/rvpn"
 )
 
 func main() {
@@ -52,6 +52,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	twfid := login.LoginRVPNWebPortal(username, password)
-	proxy.StartProxyServer(listenAddr, twfid)
+
+	w := rvpn.WebPortal{Username: username, Password: password}
+	twfid, err := w.LogIn()
+	if err != nil {
+		panic(err)
+	}
+
+	proxy.StartProxyServer(listenAddr, *twfid)
 }
