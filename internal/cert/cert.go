@@ -17,8 +17,9 @@
 package cert
 
 import (
+	"crypto/ecdsa"
+	"crypto/elliptic"
 	"crypto/rand"
-	"crypto/rsa"
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
@@ -47,7 +48,7 @@ func GetCA() ([]byte, []byte, error) {
 
 	// files do not exist, make new ones instead
 	// source: https://golang.org/src/crypto/tls/generate_cert.go
-	priv, err := rsa.GenerateKey(rand.Reader, 2048)
+	priv, err := ecdsa.GenerateKey(elliptic.P224(), rand.Reader)
 	panicOnErr(err)
 	serialNumberLimit := new(big.Int).Lsh(big.NewInt(1), 128)
 	serialNumber, err := rand.Int(rand.Reader, serialNumberLimit)
