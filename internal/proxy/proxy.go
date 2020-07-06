@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-// Package proxy provides things to set up a proxy.
+// Package proxy provides utilities to set up a proxy.
 package proxy
 
 import (
@@ -60,8 +60,8 @@ var (
 )
 
 // reqData stores a request's raw URL, and a port-stripped one.
-// rawURLwithoutPort is for URLs like https://example.com:443/ ,
-// where in href-s, port 443 does not show up but needs to be replaced.
+// rawURLWithoutPort is for URLs like https://example.com:443/ ,
+// where in href-s, port 443 does not show up but the URLs just need to be processed.
 type reqData struct {
 	rawURLWithPort    string
 	rawURLWithoutPort string
@@ -134,7 +134,7 @@ func StartProxyServer(listenAddr, twfid string) {
 		})
 	proxy.OnResponse(isWebRelatedText).Do(goproxy_html.HandleString(
 		func(s string, ctx *goproxy.ProxyCtx) string {
-			// fix link in page, and fix "src" issues in javascript files
+			// fix links in page, and fix "src" issues in javascript files
 			c := rvpnURLMatcher.ReplaceAllString(s, "$1://")
 			rawURLWithPort := ctx.UserData.(reqData).rawURLWithPort
 			rawURLWithoutPort := ctx.UserData.(reqData).rawURLWithoutPort

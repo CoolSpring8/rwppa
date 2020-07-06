@@ -15,7 +15,7 @@
 
 // Rwppa is a tool that exposes an HTTP proxy service intercepting requests to pass through ZJU RVPN web portal.
 // In other words, on receiving requests, they will be sent to rvpn.zju.edu.cn and corresponding results will be passed back to the browser,
-// or any other HTTP-proxy-capable requesters, like clients that only utilizes HTTP protocol.
+// or any other HTTP-proxy-capable requesters, like clients that only utilize HTTP protocol.
 
 // In short, users are given the ability to access ZJU intranet sites,
 // with a ZJU internet service account required, and via ZJU RVPN web portal (view rvpn.zju.edu.cn on phones to see).

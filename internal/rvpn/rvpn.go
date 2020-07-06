@@ -24,7 +24,7 @@ import (
 
 const (
 	// endpointURL is where ZJU RVPN web portal's login interface locates.
-	// TODO: find out if some of the parameters are not necessary.
+	// TODO: find out if some of the query parameters are not necessary.
 	endpointURL string = "https://rvpn.zju.edu.cn/por/login_psw.csp?type=cs&dev=android-phone&dev=android-phone&language=zh_CN"
 )
 
