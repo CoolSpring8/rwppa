@@ -77,11 +77,11 @@ func (webPortal WebPortal) LogIn() (*string, error) {
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		resp.Body.Close()
+		_ = resp.Body.Close()
 		return nil, err
 	}
 	// TODO: Must we neglect defer statement and choose to close it directly?
-	resp.Body.Close()
+	_ = resp.Body.Close()
 
 	// Not so good, but it works.
 	randCodeFinder := regexp.MustCompile(`id="svpn_req_randcode" value="(\d{3,4})"`)
@@ -128,9 +128,9 @@ func (webPortal WebPortal) LogIn() (*string, error) {
 		return nil, err
 	}
 	errorInfoFinder := regexp.MustCompile(`error_info: '(.+)',`)
-	error := errorInfoFinder.FindSubmatch(body)
-	if error != nil {
-		return nil, errors.New(string(error[1]))
+	errInfo := errorInfoFinder.FindSubmatch(body)
+	if errInfo != nil {
+		return nil, errors.New(string(errInfo[1]))
 	}
 
 	// twfid(TWFID) is a new usable value returned in the response's Set-Cookie header.
