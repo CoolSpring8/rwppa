@@ -61,7 +61,7 @@ func main() {
 	}
 
 	w := rvpn.WebPortal{Username: username, Password: password}
-	twfid, err := w.LogIn()
+	twfid, err := w.DoLogIn()
 	if err != nil {
 		panic(err)
 	}

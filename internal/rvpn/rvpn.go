@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-// Package rvpn deals with things related to ZJU RVPN web portal.
+// Package rvpn deals with logging in to ZJU RVPN web portal and get credentials.
 package rvpn
 
 import (
@@ -43,8 +43,8 @@ const (
 	RSAn = "B81AB4511CCC90B27170266122DCA5496C7D6ECCEFE65830071B487C0457403B5FCAB8C788DF37F882E897984E28250E6B11879403D54F46355F2F0802BB776EC041035F50BA5A77221FED2A91D24BF2FE44160653A2824F650E458EB3AE15A4446514C89A7EE6213F4B3687C9AB13E6ABCE919676C37E7DDF0580DBDD5643642CFA2BE8513F523E9759CA3351C944A6533752728260C8EDEB9CD59FFA08CE57FB9B109CFB0881858EBE36E384D13D4D3DB80768C36CB62FDF67799AECA4EA23D101FAC43FF2C8B1165AC4A15D2A2BDC3A987298975AFAB5A9CF4B38B8DC27ECA0278335B1ACEB197FE583D4E1648FE8922B34E2B276A23F9E61A29058225839"
 	// RSAe is a constant taken from the script in the page. 0x10001 is 65537 in decimal.
 	RSAe = 65537
-	// UserAgent is used as the User-Agent.
-	UserAgent = "Mozilla/5.0 (Linux; Android 8.1.0; Redmi 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Mobile Safari/537.36"
+	// MobileUA is used as the User-Agent.
+	MobileUA = "Mozilla/5.0 (Linux; Android 8.1.0; Redmi 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Mobile Safari/537.36"
 )
 
 // WebPortal refers to ZJU RVPN web portal.
@@ -53,22 +53,26 @@ type WebPortal struct {
 	Password string // Password is ZJU network service account password.
 }
 
-// LogIn uses username and password to get a TWFID.
+// DoLogIn uses username and password to get a TWFID.
 // TWFID is used by the web portal for authentication.
 // Make sure to check the returned error value.
-// This function performs a complicated series of operations inside,
+// This function performs a complex series of operations inside,
 // aiming to imitate normal phone browser users' behavior.
-func (webPortal WebPortal) LogIn() (*string, error) {
+// Therefore, it might look more "real" but less reliable.
+func (webPortal WebPortal) DoLogIn() (*string, error) {
 	client := &http.Client{
 		Timeout: time.Second * 10,
+		// If you really want to follow redirect, remember to manually set req.Header
+		// in this function (which is called before following the redirect).
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			return http.ErrUseLastResponse
 		}}
+	// During pre-login, we are going to grab "svpn_req_randcode" and "TWFID" for later login use.
 	req, err := http.NewRequest("GET", PreLogInURL, nil)
 	if err != nil {
 		return nil, errors.New("parsing request for web portal pre-login error")
 	}
-	req.Header.Set("User-Agent", UserAgent)
+	req.Header.Set("User-Agent", MobileUA)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -83,17 +87,18 @@ func (webPortal WebPortal) LogIn() (*string, error) {
 	// TODO: Must we neglect defer statement and choose to close it directly?
 	_ = resp.Body.Close()
 
-	// Not so good, but it works.
+	// Using regex to parse HTML is not so fancy, but it works.
 	randCodeFinder := regexp.MustCompile(`id="svpn_req_randcode" value="(\d{3,4})"`)
 	randCode := randCodeFinder.FindSubmatch(body)
 	if randCode == nil {
 		return nil, errors.New("randcode not found during pre-login")
 	}
 
-	// twfidPreValue(TWFID) is always in the response's Set-Cookie header,
+	// twfidPreValue(TWFID) is always present in the response's Set-Cookie header,
 	// regardless of success or failure on the process.
 	twfidPreValue := resp.Cookies()[0].Value
 
+	// Now we come to the stage to prepare for the actual login process.
 	n := new(big.Int)
 	if _, ok := n.SetString(RSAn, 16); !ok {
 		return nil, errors.New("parsing RSA n required for web portal login error")
@@ -114,48 +119,43 @@ func (webPortal WebPortal) LogIn() (*string, error) {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("Origin", "https://rvpn.zju.edu.cn")
 	req.Header.Set("Referer", "https://rvpn.zju.edu.cn/por/login_psw.csp")
-	req.Header.Set("User-Agent", UserAgent)
+	req.Header.Set("User-Agent", MobileUA)
 	resp, err = client.Do(req)
 	if err != nil {
 		return nil, errors.New("network error during login to web portal")
 	}
 	defer resp.Body.Close()
 
-	// It is probably not worth parsing HTML, extracting the script piece,
-	// and parsing or executing it just to access a tiny error variable. Is it?
 	body, err = ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
-	errorInfoFinder := regexp.MustCompile(`error_info: '(.+)',`)
+	// It is probably not worth parsing HTML, extracting the script piece,
+	// and parsing or executing it just to access a tiny error variable. Is it?
+	errorInfoFinder := regexp.MustCompile(`error_info: '(.+)'`)
 	errInfo := errorInfoFinder.FindSubmatch(body)
 	if errInfo != nil {
 		return nil, errors.New(string(errInfo[1]))
 	}
 
-	// twfid(TWFID) is a new usable value returned in the response's Set-Cookie header.
+	// twfid(TWFID) is a newly assigned, usable credential returned in the response's Set-Cookie header.
 	twfid := resp.Cookies()[0].Value
 
 	return &twfid, nil
 }
 
-// LogInSimple also uses username and password to get a TWFID,
+// DoLogInSimple also uses username and password to get a TWFID,
 // but it has a simpler logic.
-func (webPortal WebPortal) LogInSimple() (*string, error) {
-	data := url.Values{}
-	data.Set("svpn_name", webPortal.Username)
-	data.Set("svpn_password", webPortal.Password)
+// This was inspired by https://github.com/flankerhqd/SangforVpn-Fetcher/
+// and we get it further simplified.
+func (webPortal WebPortal) DoLogInSimple() (*string, error) {
+	data := url.Values{"svpn_name": {webPortal.Username}, "svpn_password": {webPortal.Password}}
 
-	client := &http.Client{}
-	req, err := http.NewRequest("POST", LogInSimpleURL, strings.NewReader(data.Encode()))
+	resp, err := http.PostForm(LogInSimpleURL, data)
 	if err != nil {
 		return nil, err
 	}
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
+	defer resp.Body.Close()
 
 	twfid := resp.Cookies()[0].Value
 
