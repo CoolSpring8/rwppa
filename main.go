@@ -34,7 +34,7 @@ import (
 	"os"
 
 	"github.com/coolspring8/rwppa/internal/proxy"
-	"github.com/coolspring8/rwppa/internal/rvpn"
+	"github.com/coolspring8/rwppa/pkg/rvpn"
 	"golang.org/x/crypto/ssh/terminal"
 )
 
