@@ -46,9 +46,13 @@ var (
 		})
 
 	// hasMovedLocationHeader checks whether the request has a Location header.
-	hasMovedLocationHeader goproxy.RespCondition = goproxy.RespConditionFunc(func(resp *http.Response, ctx *goproxy.ProxyCtx) bool {
-		return resp.Header.Get("Location") != ""
-	})
+	hasMovedLocationHeader goproxy.RespCondition = goproxy.RespConditionFunc(
+		func(resp *http.Response, ctx *goproxy.ProxyCtx) bool {
+			if resp == nil {
+				return false
+			}
+			return resp.Header.Get("Location") != ""
+		})
 
 	// isWebRelatedText checks whether the response's content type is one of html, js, css, xml and json.
 	isWebRelatedText goproxy.RespCondition = goproxy.ContentTypeIs(
