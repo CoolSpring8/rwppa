@@ -48,7 +48,7 @@ func GetCA() ([]byte, []byte, error) {
 
 	// files do not exist, make new ones instead
 	// source: https://golang.org/src/crypto/tls/generate_cert.go
-	priv, err := ecdsa.GenerateKey(elliptic.P224(), rand.Reader)
+	priv, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	panicOnErr(err)
 	serialNumberLimit := new(big.Int).Lsh(big.NewInt(1), 128)
 	serialNumber, err := rand.Int(rand.Reader, serialNumberLimit)
