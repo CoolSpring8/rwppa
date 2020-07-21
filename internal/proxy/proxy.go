@@ -170,6 +170,7 @@ func MovedLocationHandler(resp *http.Response, ctx *goproxy.ProxyCtx) *http.Resp
 }
 
 // WebTextHandler fixes links in page and "src" issues in javascript files.
+// This solution, however, may prevent content streaming. Fix it?
 func WebTextHandler() goproxy.RespHandler {
 	return goproxy_html.HandleString(
 		func(s string, ctx *goproxy.ProxyCtx) string {

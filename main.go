@@ -39,6 +39,7 @@ import (
 )
 
 func main() {
+	// Stay calm with this temporary solution, we are going to refactor all these codes on input.
 	var username string
 	var password string
 	var listenAddr string

@@ -53,8 +53,8 @@ type WebPortal struct {
 	Password string // Password is ZJU network service account password.
 }
 
-// DoLogIn uses username and password to get a TWFID.
-// TWFID is used by the web portal for authentication.
+// DoLogIn uses username and password to get a TWFID,
+// which is used by the web portal for authentication.
 // Make sure to check the returned error value.
 // This function performs a complex series of operations inside,
 // aiming to imitate normal phone browser users' behavior.
@@ -144,8 +144,9 @@ func (webPortal WebPortal) DoLogIn() (*string, error) {
 	return &twfid, nil
 }
 
-// DoLogInSimple also uses username and password to get a TWFID,
-// but it has a simpler logic.
+// DoLogInSimple also uses username and password to get a TWFID, but has a simpler logic.
+// Incorrect or empty username and password will simply lead to a useless TWFID,
+// So use it with care.
 // This was inspired by https://github.com/flankerhqd/SangforVpn-Fetcher/
 // and we get it further simplified.
 func (webPortal WebPortal) DoLogInSimple() (*string, error) {
