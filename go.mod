@@ -1,9 +1,9 @@
 module github.com/coolspring8/rwppa
 
-go 1.14
+go 1.15
 
 require (
-	github.com/elazarl/goproxy v0.0.0-20200710112657-153946a5f232
-	github.com/elazarl/goproxy/ext v0.0.0-20200710112657-153946a5f232
-	golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899
+	github.com/elazarl/goproxy v0.0.0-20200809112317-0581fc3aee2d
+	github.com/elazarl/goproxy/ext v0.0.0-20200809112317-0581fc3aee2d
+	golang.org/x/crypto v0.0.0-20200728195943-123391ffb6de
 )
