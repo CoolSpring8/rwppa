@@ -5,5 +5,5 @@ go 1.15
 require (
 	github.com/elazarl/goproxy v0.0.0-20200809112317-0581fc3aee2d
 	github.com/elazarl/goproxy/ext v0.0.0-20200809112317-0581fc3aee2d
-	golang.org/x/crypto v0.0.0-20200728195943-123391ffb6de
+	golang.org/x/crypto v0.7.0
 )
