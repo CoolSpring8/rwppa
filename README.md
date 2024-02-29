@@ -7,7 +7,7 @@
 如果你来到这里，可以继续查看下列仓库：
 
 - 基于 WebVPN 的 fork：[Long0x0/rwppa](https://github.com/Long0x0/rwppa/tree/webvpn)
-- 容器化 EasyConnect：[Hagb/docker-easyconnect](https://github.com/Hagb/docker-easyconnect)
+- 容器化 EasyConnect：[docker-easyconnect/docker-easyconnect](https://github.com/docker-easyconnect/docker-easyconnect)
 - EasyConnect 第三方开源客户端：[lyc8503/EasierConnect](https://github.com/lyc8503/EasierConnect)
   - **[推荐] ZJU RVPN 客户端**：[Mythologyli/zju-connect](https://github.com/Mythologyli/zju-connect)
 
