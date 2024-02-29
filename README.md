@@ -1,5 +1,18 @@
 # rwppa
 
+## [DEPRECATED] 归档说明
+
+由于已有全方面更佳的解决方案可供选择，此项目进入存档状态，不再维护。
+
+如果你来到这里，可以继续查看下列仓库：
+
+- 基于 WebVPN 的 fork：[Long0x0/rwppa](https://github.com/Long0x0/rwppa/tree/webvpn)
+- 容器化 EasyConnect：[Hagb/docker-easyconnect](https://github.com/Hagb/docker-easyconnect)
+- EasyConnect 第三方开源客户端：[lyc8503/EasierConnect](https://github.com/lyc8503/EasierConnect)
+  - **[推荐] ZJU RVPN 客户端**：[Mythologyli/zju-connect](https://github.com/Mythologyli/zju-connect)
+
+## 简介
+
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CoolSpring8/rwppa/Go) ![Codecov](https://img.shields.io/codecov/c/github/CoolSpring8/rwppa) ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/CoolSpring8/rwppa) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/CoolSpring8/rwppa) ![GitHub All Releases](https://img.shields.io/github/downloads/CoolSpring8/rwppa/total) ![GitHub](https://img.shields.io/github/license/CoolSpring8/rwppa)
 
 RVPN Web Portal Proxy Adapter (based on MITM)
